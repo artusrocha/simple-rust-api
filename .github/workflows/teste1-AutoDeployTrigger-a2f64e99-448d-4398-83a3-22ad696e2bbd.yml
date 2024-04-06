@@ -1,0 +1,43 @@
+name: Trigger auto deployment for teste1
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/teste1-AutoDeployTrigger-a2f64e99-448d-4398-83a3-22ad696e2bbd.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.TESTE1_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: artusacr.azurecr.io
+          registryUsername: ${{ secrets.TESTE1_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.TESTE1_REGISTRY_PASSWORD }}
+          containerAppName: teste1
+          resourceGroup: 05apr2024-containerapps
+          imageToBuild: artusacr.azurecr.io/simple-rust-api:${{ github.sha }}
+          
+            
+
+     
+
