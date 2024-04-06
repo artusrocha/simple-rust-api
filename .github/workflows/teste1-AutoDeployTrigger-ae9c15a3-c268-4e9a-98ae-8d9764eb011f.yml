@@ -34,6 +34,7 @@ jobs:
           registryUsername: ${{ secrets.TESTE1_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.TESTE1_REGISTRY_PASSWORD }}
           containerAppName: teste1
+          containerName: teste1
           resourceGroup: 05apr2024-containerapps
           imageToBuild: artusacr.azurecr.io/teste1:${{ github.sha }}
           
